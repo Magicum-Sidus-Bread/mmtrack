@@ -24,7 +24,7 @@ def show_labels_img(imgname):
 if __name__ == '__main__':
     # CLASSES = ['aeroplane', 'bicycle', 'bird', 'boat', 'bottle', 'bus', 'car', 'cat', 'chair', 'cow', 'diningtable', 'dog',
     #    'horse', 'motorbike', 'person', 'pottedplant', 'sheep', 'sofa', 'train', 'tvmonitor']
-    CLASSES=['Ship', 'Plane']
+    CLASSES=['Unknown', 'Plane', 'Ship']
     DATASET_PATH='G:/大创项目/test_process_data/new_train/'
-    show_labels_img('P0184')
+    show_labels_img('P1500')
 

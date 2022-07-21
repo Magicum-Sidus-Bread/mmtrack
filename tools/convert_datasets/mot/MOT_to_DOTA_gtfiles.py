@@ -4,12 +4,12 @@ gtpath = 'G:/大创项目/test_process_data/gt/'
 gtpath_new = 'G:/大创项目/test_process_data/new_gt/'
 
 filenames = os.listdir(gtpath)
-filenames.sort(key=lambda x:int(x[:-4]))
+# filenames.sort(key=lambda x:int(x[:-4]))
 print(filenames)
 offset = 0
 Maxframe = 0
 for file in filenames:
-    offset = Maxframe
+    offset = offset + Maxframe
     Maxframe = 0
     f = open(gtpath+file, "r")
     lines = f.readlines()  # 读取全部内容 ，并以列表方式返回

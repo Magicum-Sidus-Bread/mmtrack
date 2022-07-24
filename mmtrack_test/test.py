@@ -2,8 +2,8 @@
 import mmcv
 import tempfile
 from mmtrack.apis import inference_mot, init_model
-mot_config = '../configs/mot/deepsort/deepsort_faster-rcnn_fpn_4e_mot17-private-half.py'
-input_video = '../demo/demo.mp4'
+mot_config = '../configs/mot/myconfig/ori_byte_track.py'
+input_video = './input.mp4'
 imgs = mmcv.VideoReader(input_video)
 # build the model from a config file
 mot_model = init_model(mot_config, device='cuda:0')
@@ -21,7 +21,7 @@ for i, img in enumerate(imgs):
             out_file=f'{out_path}/{i:06d}.jpg')
     prog_bar.update()
 
-output = '../demo/mot.mp4'
+output = './output.mp4'
 print(f'\n making the output video at {output} with a FPS of {imgs.fps}')
 mmcv.frames2video(out_path, output, fps=imgs.fps, fourcc='mp4v')
 out_dir.cleanup()

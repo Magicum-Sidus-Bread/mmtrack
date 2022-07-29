@@ -62,15 +62,27 @@ class ByteTrack(BaseMultiObjectTracker):
         if frame_id == 0:
             self.tracker.reset()
 
+        print("self.detector:")
+        print(self.detector)
         det_results = self.detector.simple_test(
             img, img_metas, rescale=rescale)
         assert len(det_results) == 1, 'Batch inference is not supported.'
         bbox_results = det_results[0]
+        print("bbox_results")
+        print(bbox_results)
         num_classes = len(bbox_results)
-
+        print("num_classes")
+        print(num_classes)
         outs_det = results2outs(bbox_results=bbox_results)
         det_bboxes = torch.from_numpy(outs_det['bboxes']).to(img)
         det_labels = torch.from_numpy(outs_det['labels']).to(img).long()
+        print("下面是检测结果：")
+        print(det_bboxes)
+        print("下面是bbox数量")
+        print(len(det_bboxes))
+        print(det_labels)
+        print("下面是label数量：")
+        print(len(det_labels))
 
         track_bboxes, track_labels, track_ids = self.tracker.track(
             img=img,

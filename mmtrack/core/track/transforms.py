@@ -142,7 +142,8 @@ def results2outs(bbox_results=None,
         - ids (np.ndarray): shape (n, )
     """
     outputs = dict()
-
+    print("bbox_results")
+    print(bbox_results)
     if bbox_results is not None:
         labels = []
         for i, bbox in enumerate(bbox_results):
@@ -151,6 +152,11 @@ def results2outs(bbox_results=None,
         outputs['labels'] = labels
 
         bboxes = np.concatenate(bbox_results, axis=0).astype(np.float32)
+        print("bbbbbboexs")
+        print(bboxes)
+        print(bboxes[0][0])
+        bboxes = [[bboxes[0][0], bboxes[0][1]-0.5*bboxes[0][3], bboxes[0][2]-0.5*bboxes[0][4], bboxes[0][1]+0.5*bboxes[0][3], bboxes[0][2]+0.5*bboxes[0][4], bboxes[0][6]]]
+        bboxes = np.array(bboxes)
         if bboxes.shape[1] == 5:
             outputs['bboxes'] = bboxes
         elif bboxes.shape[1] == 6:

@@ -104,6 +104,9 @@ class DeepSORT(BaseMultiObjectTracker):
             # TODO: support batch inference
             det_bboxes = det_bboxes[0]
             det_labels = det_labels[0]
+            print("下面是重要信息")
+            print(det_bboxes)
+            print(det_labels)
             num_classes = self.detector.roi_head.bbox_head.num_classes
         elif hasattr(self.detector, 'bbox_head'):
             outs = self.detector.bbox_head(x)

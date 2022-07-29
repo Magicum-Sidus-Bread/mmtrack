@@ -8,7 +8,7 @@ def show_labels_img(imgname):
     h, w = img.shape[:2]
     print(w,h)
     label = []
-    with open("G:/大创项目/test_process_data/new_gt/"+imgname+".txt",'r') as flabel:
+    with open("G:/大创项目/test_process_data/new_gt___30/"+imgname+".txt",'r') as flabel:
         for label in flabel:
             label = label.split(' ')
             label = [float(x.strip()) for x in label]
@@ -25,6 +25,6 @@ if __name__ == '__main__':
     # CLASSES = ['aeroplane', 'bicycle', 'bird', 'boat', 'bottle', 'bus', 'car', 'cat', 'chair', 'cow', 'diningtable', 'dog',
     #    'horse', 'motorbike', 'person', 'pottedplant', 'sheep', 'sofa', 'train', 'tvmonitor']
     CLASSES=['Unknown', 'Plane', 'Ship']
-    DATASET_PATH='G:/大创项目/test_process_data/new_train/'
-    show_labels_img('P1500')
+    DATASET_PATH='G:/大创项目/test_process_data/new_train___30/'
+    show_labels_img('P3999')
 

@@ -79,7 +79,7 @@ def _cv2_show_tracks(img,
         if classes is not None:
             text += f'|{classes[label]}'
         width = len(text) * text_width
-        img[y1:y1 + text_height, x1:x1 + width, :] = bbox_color
+        # img[y1:y1 + text_height, x1:x1 + width, :] = bbox_color
         cv2.putText(
             img,
             text, (x1, y1 + text_height - 2),
@@ -90,8 +90,8 @@ def _cv2_show_tracks(img,
         # id
         text = str(id)
         width = len(text) * text_width
-        img[y1 + text_height:y1 + 2 * text_height,
-            x1:x1 + width, :] = bbox_color
+        # img[y1 + text_height:y1 + 2 * text_height,
+        #     x1:x1 + width, :] = bbox_color
         cv2.putText(
             img,
             str(id), (x1, y1 + 2 * text_height - 2),

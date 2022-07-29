@@ -208,13 +208,19 @@ class BaseTracker(BaseModule, metaclass=ABCMeta):
         bboxes[:, 1::2] = torch.clamp(bboxes[:, 1::2], min=0, max=h)
 
         crop_imgs = []
+        print("bbboxes")
+        print(bboxes)
         for bbox in bboxes:
             x1, y1, x2, y2 = map(int, bbox)
-            if x2 == x1:
-                x2 = x1 + 1
-            if y2 == y1:
-                y2 = y1 + 1
-            crop_img = img[:, :, y1:y2, x1:x2]
+            if x2 == 0:
+                x2 = x2 + 1
+            if y2 == 0:
+                y2 = y2 + 1
+            y_ = y1 + y2
+            x_ = x1 + x2
+            crop_img = img[:, :, y1:y_, x1:x_] ####这里必须和数据标注格式对应###修改
+            print("input_crop_img")
+            print(crop_img)
             if self.reid.get('img_scale', False):
                 crop_img = F.interpolate(
                     crop_img,

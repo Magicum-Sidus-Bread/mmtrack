@@ -24,6 +24,9 @@ from .uav123_dataset import UAV123Dataset
 from .vot_dataset import VOTDataset
 from .youtube_vis_dataset import YouTubeVISDataset
 
+#from .mydata import Mydata
+#from .dota import DOTADataset
+
 __all__ = [
     'DATASETS', 'PIPELINES', 'build_dataloader', 'build_dataset', 'CocoVID',
     'CocoVideoDataset', 'ImagenetVIDDataset', 'MOTChallengeDataset',

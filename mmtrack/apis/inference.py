@@ -73,6 +73,9 @@ def init_model(config,
         else:
             print("Warning: The model doesn't have classes")
             model.CLASSES = None
+    model.CLASSES = ('1','2') ##临时添加
+    print("model.CLASSES")
+    print(model.CLASSES)
     model.cfg = config  # save the config in the model for convenience
     model.to(device)
     model.eval()
@@ -120,6 +123,8 @@ def inference_mot(model, img, frame_id):
     # forward the model
     with torch.no_grad():
         result = model(return_loss=False, rescale=True, **data)
+    print("model_result")
+    print(result)
     return result
 
 

@@ -1,5 +1,4 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-from .single_level_roi_extractor import SingleRoIExtractor
-from .temporal_roi_align import TemporalRoIAlign
+from .rotate_single_level_roi_extractor import RotatedSingleRoIExtractor
 
-__all__ = ['SingleRoIExtractor', 'TemporalRoIAlign']
+__all__ = ['RotatedSingleRoIExtractor']

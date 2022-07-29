@@ -75,10 +75,15 @@ def bbox_xyxy_to_cxcyah(bboxes):
     Returns:
         Tensor: Converted bboxes.
     """
-    cx = (bboxes[:, 2] + bboxes[:, 0]) / 2
-    cy = (bboxes[:, 3] + bboxes[:, 1]) / 2
-    w = bboxes[:, 2] - bboxes[:, 0]
-    h = bboxes[:, 3] - bboxes[:, 1]
+    # cx = (bboxes[:, 2] + bboxes[:, 0]) / 2
+    # cy = (bboxes[:, 3] + bboxes[:, 1]) / 2
+    # w = bboxes[:, 2] - bboxes[:, 0]
+    # h = bboxes[:, 3] - bboxes[:, 1]
+    #####修改
+    cx = bboxes[:, 0]
+    cy = bboxes[:, 1]
+    w = bboxes[:, 2]
+    h = bboxes[:, 3]
     xyah = torch.stack([cx, cy, w / h, h], -1)
     return xyah
 

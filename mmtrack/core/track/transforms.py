@@ -155,8 +155,15 @@ def results2outs(bbox_results=None,
         print("bbbbbboexs")
         print(bboxes)
         print(bboxes[0][0])
-        bboxes = [[bboxes[0][0], bboxes[0][1]-0.5*bboxes[0][3], bboxes[0][2]-0.5*bboxes[0][4], bboxes[0][1]+0.5*bboxes[0][3], bboxes[0][2]+0.5*bboxes[0][4], bboxes[0][6]]]
+        print("***************&&&&&&&&&&&&&")
+        bboxes_ = []
+        for bbox_ in bboxes:
+            bboxes_.append([bbox_[0], bbox_[1]-0.5*bbox_[3], bbox_[2]-0.5*bbox_[4], bbox_[1]+0.5*bbox_[3], bbox_[2]+0.5*bbox_[4], bbox_[6]])
+        # bboxes = [[bboxes[0][0], bboxes[0][1]-0.5*bboxes[0][3], bboxes[0][2]-0.5*bboxes[0][4], bboxes[0][1]+0.5*bboxes[0][3], bboxes[0][2]+0.5*bboxes[0][4], bboxes[0][6]]]
+        bboxes = bboxes_
         bboxes = np.array(bboxes)
+        print("***************&&&&&&&&&&&&&")
+        print(bboxes)
         if bboxes.shape[1] == 5:
             outputs['bboxes'] = bboxes
         elif bboxes.shape[1] == 6:

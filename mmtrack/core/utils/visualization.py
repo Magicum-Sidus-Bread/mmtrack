@@ -43,13 +43,16 @@ def _cv2_show_tracks(img,
                      wait_time=0,
                      out_file=None):
     """Show the tracks with opencv."""
-    assert bboxes.ndim == 2
-    assert labels.ndim == 1
-    assert ids.ndim == 1
-    assert bboxes.shape[0] == labels.shape[0]
-    assert bboxes.shape[1] == 5
+    ##修改
+    # assert bboxes.ndim == 2
+    # assert labels.ndim == 1
+    # assert ids.ndim == 1
+    # assert bboxes.shape[0] == labels.shape[0]
+    # assert bboxes.shape[1] == 5
     if isinstance(img, str):
         img = mmcv.imread(img)
+    print("!!!!!!!!!!!!!!!!$$$$")
+    print(bboxes)
 
     img_shape = img.shape
     bboxes[:, 0::2] = np.clip(bboxes[:, 0::2], 0, img_shape[1])
@@ -65,6 +68,8 @@ def _cv2_show_tracks(img,
         assert masks.shape[0] == bboxes.shape[0]
 
     text_width, text_height = 9, 13
+    print("0000））））））")
+    print(bboxes)
     for i, (bbox, label, id) in enumerate(zip(bboxes, labels, ids)):
         x1, y1, x2, y2 = bbox[:4].astype(np.int32)
         score = float(bbox[-1])

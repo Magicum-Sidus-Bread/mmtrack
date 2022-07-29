@@ -263,6 +263,9 @@ class BaseMultiObjectTracker(BaseModule, metaclass=ABCMeta):
             bbox_results=track_bboxes,
             mask_results=track_masks,
             mask_shape=img.shape[:2])
+        print("&&&&&&&&&&&&&")
+        print(outs_track)
+        print(outs_track.get('bboxes', None))
         img = imshow_tracks(
             img,
             outs_track.get('bboxes', None),

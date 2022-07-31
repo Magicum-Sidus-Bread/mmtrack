@@ -16,6 +16,7 @@ for i, img in enumerate(imgs):
     print(len(img))
     result = inference_mot(mot_model, img, frame_id=i)
     mot_model.show_result(
+            i,
             img,
             result,
             show=False,

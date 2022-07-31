@@ -25,6 +25,6 @@ if __name__ == '__main__':
     # CLASSES = ['aeroplane', 'bicycle', 'bird', 'boat', 'bottle', 'bus', 'car', 'cat', 'chair', 'cow', 'diningtable', 'dog',
     #    'horse', 'motorbike', 'person', 'pottedplant', 'sheep', 'sofa', 'train', 'tvmonitor']
     CLASSES=['Unknown', 'Plane', 'Ship']
-    DATASET_PATH='G:/大创项目/test_process_data/new_train___30/'
-    show_labels_img('P3999')
+    DATASET_PATH='G:\大创项目\\test_process_data\\new_train___30\\'
+    show_labels_img('P4424')
 

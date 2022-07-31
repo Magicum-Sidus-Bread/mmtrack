@@ -221,6 +221,7 @@ class BaseMultiObjectTracker(BaseModule, metaclass=ABCMeta):
         return outputs
 
     def show_result(self,
+                    i,
                     img,
                     result,
                     score_thr=0.0,
@@ -260,6 +261,7 @@ class BaseMultiObjectTracker(BaseModule, metaclass=ABCMeta):
         if isinstance(img, str):
             img = mmcv.imread(img)
         outs_track = results2outs(
+            i,
             bbox_results=track_bboxes,
             mask_results=track_masks,
             mask_shape=img.shape[:2])

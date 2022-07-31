@@ -45,7 +45,7 @@ test_pipeline = [
             dict(type='VideoCollect', keys=['img'])
         ])
 ]
-data_root = 'data/MOT17/'
+data_root = 'G:/大创项目/Multi-object-tracking-trainData/Mydata/'
 data = dict(
     samples_per_gpu=2,
     workers_per_gpu=2,
@@ -62,7 +62,7 @@ data = dict(
         pipeline=train_pipeline),
     val=dict(
         type=dataset_type,
-        ann_file=data_root + 'annotations/half-val_cocoformat.json',
+        ann_file=data_root + 'annotations/half-train_cocoformat.json',
         img_prefix=data_root + 'train',
         ref_img_sampler=None,
         pipeline=test_pipeline),

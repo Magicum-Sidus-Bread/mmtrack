@@ -163,8 +163,9 @@ class MOTChallengeDataset(CocoVideoDataset):
         """
         assert isinstance(results, dict), 'results must be a dict.'
         if resfile_path is None:
-            tmp_dir = tempfile.TemporaryDirectory()
-            resfile_path = tmp_dir.name
+            # tmp_dir = tempfile.TemporaryDirectory()
+            # resfile_path = tmp_dir.name
+            resfile_path = 'G:/大创项目/Multi-object-tracking-trainData/log/'
         else:
             tmp_dir = None
             if osp.exists(resfile_path):
@@ -176,22 +177,33 @@ class MOTChallengeDataset(CocoVideoDataset):
         for metric in metrics:
             resfiles[metric] = osp.join(resfile_path, metric)
             os.makedirs(resfiles[metric], exist_ok=True)
-
+        print("@@@@@@@@@@@@@@@@@@@@")
+        print(self.data_infos)
         inds = [i for i, _ in enumerate(self.data_infos) if _['frame_id'] == 0]
         num_vids = len(inds)
-        assert num_vids == len(self.vid_ids)
+        print("%%%%%%%%%%%%%%%%%%%%%%")
+        print(num_vids)
+        print(self.vid_ids)
+        # 修改
+
+        # assert num_vids == len(self.vid_ids)
         inds.append(len(self.data_infos))
         vid_infos = self.coco.load_vids(self.vid_ids)
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        print(vid_infos)
         names = [_['name'] for _ in vid_infos]
 
-        for i in range(num_vids):
+        # for i in range(num_vids):
+        for i in range(len(self.vid_ids)):
             for metric in metrics:
                 formatter = getattr(self, f'format_{metric}_results')
                 formatter(results[f'{metric}_bboxes'][inds[i]:inds[i + 1]],
                           self.data_infos[inds[i]:inds[i + 1]],
                           f'{resfiles[metric]}/{names[i]}.txt')
 
-        return resfile_path, resfiles, names, tmp_dir
+        print("************************")
+        print(resfiles)
+        return resfile_path, resfiles, names
 
     def format_track_results(self, results, infos, resfile):
         """Format tracking results."""
@@ -373,14 +385,17 @@ class MOTChallengeDataset(CocoVideoDataset):
                 raise KeyError(f'metric {metric} is not supported.')
 
         if 'track' in metrics:
-            resfile_path, resfiles, names, tmp_dir = self.format_results(
+            resfile_path, resfiles, names = self.format_results(
                 results, resfile_path, metrics)
             print_log('Evaluate CLEAR MOT results.', logger=logger)
             distth = 1 - track_iou_thr
             accs = []
             # support loading data from ceph
-            local_dir = tempfile.TemporaryDirectory()
-
+            # local_dir = tempfile.TemporaryDirectory()
+            local_dir = 'G:/大创项目/Multi-object-tracking-trainData/log/'
+            print("local_dir")
+            print(local_dir)
+            print(names)
             for name in names:
                 if 'half-train' in self.ann_file:
                     gt_file = osp.join(self.img_prefix,
@@ -391,11 +406,15 @@ class MOTChallengeDataset(CocoVideoDataset):
                 else:
                     gt_file = osp.join(self.img_prefix, f'{name}/gt/gt.txt')
                 res_file = osp.join(resfiles['track'], f'{name}.txt')
+                print("res_file")
+                print(res_file)
                 # copy gt file from ceph to local temporary directory
-                gt_dir_path = osp.join(local_dir.name, name, 'gt')
+
+                # gt_dir_path = osp.join(local_dir.name, name, 'gt')
+                gt_dir_path = osp.join(local_dir, name, 'gt')
                 os.makedirs(gt_dir_path)
                 copied_gt_file = osp.join(
-                    local_dir.name,
+                    local_dir,
                     gt_file.replace(gt_file.split(name)[0], ''))
 
                 f = open(copied_gt_file, 'wb')
@@ -405,7 +424,7 @@ class MOTChallengeDataset(CocoVideoDataset):
                 f.write(gt_content)
                 f.close()
                 # copy sequence file from ceph to local temporary directory
-                copied_seqinfo_path = osp.join(local_dir.name, name,
+                copied_seqinfo_path = osp.join(local_dir, name,
                                                'seqinfo.ini')
                 f = open(copied_seqinfo_path, 'wb')
                 seq_content = self.file_client.get(
@@ -452,7 +471,7 @@ class MOTChallengeDataset(CocoVideoDataset):
             # so this word needs to be splited out
             output_folder = resfiles['track'].rsplit(os.sep, 1)[0]
             dataset_config = self.get_dataset_cfg_for_hota(
-                local_dir.name, output_folder, seqmap)
+                local_dir, output_folder, seqmap)
 
             evaluator = trackeval.Evaluator(eval_config)
             dataset = [trackeval.datasets.MotChallenge2DBox(dataset_config)]
@@ -485,9 +504,9 @@ class MOTChallengeDataset(CocoVideoDataset):
                 formatters=mh.formatters,
                 namemap=mm.io.motchallenge_metric_names)
             print(str_summary)
-            local_dir.cleanup()
-            if tmp_dir is not None:
-                tmp_dir.cleanup()
+            # local_dir.cleanup()
+            # if tmp_dir is not None:
+            #     tmp_dir.cleanup()
 
         if 'bbox' in metrics:
             if isinstance(results, dict):

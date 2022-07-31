@@ -78,7 +78,7 @@ def parse_gts(gts, is_mot15):
         elif class_id in IGNORES:
             continue
         anns = dict(
-            category_id=1,
+            category_id=class_id,
             bbox=bbox,
             area=bbox[2] * bbox[3],
             iscrowd=False,
@@ -125,7 +125,7 @@ def main():
             in_folder = osp.join(args.input, subset)
         out_file = osp.join(args.output, f'{subset}_cocoformat.json')
         outputs = defaultdict(list)
-        outputs['categories'] = [dict(id=1, name='pedestrian')]
+        outputs['categories'] = [dict(id=1, name='plane'), dict(id=2, name='ship')]
         if args.convert_det:
             det_file = osp.join(args.output, f'{subset}_detections.pkl')
             detections = dict(det_bboxes=dict())
@@ -138,13 +138,13 @@ def main():
             video_folder = osp.join(in_folder, video_name)
             infos = mmcv.list_from_file(f'{video_folder}/seqinfo.ini')
             # video-level infos
-            assert video_name == infos[1].strip().split('=')[1]
+            # assert video_name == infos[1].strip().split('=')[1]
             img_folder = infos[2].strip().split('=')[1]
             img_names = os.listdir(f'{video_folder}/{img_folder}')
             img_names = sorted(img_names)
             fps = int(infos[3].strip().split('=')[1])
             num_imgs = int(infos[4].strip().split('=')[1])
-            assert num_imgs == len(img_names)
+            # assert num_imgs == len(img_names)
             width = int(infos[5].strip().split('=')[1])
             height = int(infos[6].strip().split('=')[1])
             video = dict(

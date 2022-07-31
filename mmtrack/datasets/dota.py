@@ -189,6 +189,8 @@ class DOTADataset(CustomDataset):
                 Default: 4.
         """
         nproc = min(nproc, os.cpu_count())
+        print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
+        print(metric)
         if not isinstance(metric, str):
             assert len(metric) == 1
             metric = metric[0]

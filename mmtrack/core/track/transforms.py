@@ -118,7 +118,8 @@ def outs2results(bboxes=None,
     return results
 
 
-def results2outs(bbox_results=None,
+def results2outs(frameid,
+                 bbox_results=None,
                  mask_results=None,
                  mask_shape=None,
                  **kwargs):
@@ -154,6 +155,15 @@ def results2outs(bbox_results=None,
         bboxes = np.concatenate(bbox_results, axis=0).astype(np.float32)
         print("bbbbbboexs")
         print(bboxes)
+        ##### 生成跟踪结果
+        f = open('G:/大创项目/mmTracking/mmtrack/mmtrack_test/test_file3.txt', 'a')
+
+        for bbox_test in bboxes:
+            line = str(frameid+1)+','+str(int(bbox_test[0])+1)+','+str(bbox_test[1]-0.5*bbox_test[3])+','+str(bbox_test[2]-0.5*bbox_test[4])+','+str(bbox_test[3])+','+str(bbox_test[4])+','+str(bbox_test[6])+',-1,-1,-1'
+            print(line)
+            f.write(line)
+            f.write('\n')
+        f.close()
         print(bboxes[0][0])
         print("***************&&&&&&&&&&&&&")
         bboxes_ = []

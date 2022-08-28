@@ -42,7 +42,7 @@ class ByteTrack(BaseMultiObjectTracker):
         """Forward function during training."""
         return self.detector.forward_train(*args, **kwargs)
 
-    def simple_test(self, img, img_metas, rescale=False, **kwargs):
+    def simple_test(self, img, img_metas, rescale=False, public_bboxes = None, **kwargs):
         """Test without augmentations.
 
         Args:
@@ -58,31 +58,79 @@ class ByteTrack(BaseMultiObjectTracker):
         Returns:
             dict[str : list(ndarray)]: The tracking results.
         """
+        # frame_id = img_metas[0].get('frame_id', -1)
+        # if frame_id == 0:
+        #     self.tracker.reset()
+        #
+        # # print("self.detector:")
+        # # print(self.detector)
+        # det_results = self.detector.simple_test(
+        #     img, img_metas, rescale=rescale)
+        # assert len(det_results) == 1, 'Batch inference is not supported.'
+        # bbox_results = det_results[0]
+        # print("bbox_results")
+        # print(bbox_results)
+        # num_classes = len(bbox_results)
+        # print("num_classes")
+        # print(num_classes)
+        # outs_det = results2outs(bbox_results=bbox_results)
+        # det_bboxes = torch.from_numpy(outs_det['bboxes']).to(img)
+        # det_labels = torch.from_numpy(outs_det['labels']).to(img).long()
+        # print("下面是检测结果：")
+        # print(det_bboxes)
+        # print("下面是bbox数量")
+        # print(len(det_bboxes))
+        # print(det_labels)
+        # print("下面是label数量：")
+        # print(len(det_labels))
+        print("img:")
+        print(img)
+        print(img_metas)
         frame_id = img_metas[0].get('frame_id', -1)
         if frame_id == 0:
             self.tracker.reset()
 
-        print("self.detector:")
-        print(self.detector)
-        det_results = self.detector.simple_test(
-            img, img_metas, rescale=rescale)
-        assert len(det_results) == 1, 'Batch inference is not supported.'
-        bbox_results = det_results[0]
-        print("bbox_results")
-        print(bbox_results)
-        num_classes = len(bbox_results)
-        print("num_classes")
-        print(num_classes)
-        outs_det = results2outs(bbox_results=bbox_results)
-        det_bboxes = torch.from_numpy(outs_det['bboxes']).to(img)
-        det_labels = torch.from_numpy(outs_det['labels']).to(img).long()
-        print("下面是检测结果：")
-        print(det_bboxes)
-        print("下面是bbox数量")
-        print(len(det_bboxes))
-        print(det_labels)
-        print("下面是label数量：")
-        print(len(det_labels))
+        x = self.detector.extract_feat(img)
+        if hasattr(self.detector, 'roi_head'):
+            # TODO: check whether this is the case
+            if public_bboxes is not None:
+                public_bboxes = [_[0] for _ in public_bboxes]
+                proposals = public_bboxes
+            else:
+                proposals = self.detector.rpn_head.simple_test_rpn(
+                    x, img_metas)
+
+            print("important")
+            print(x)
+            print(img_metas)
+            print(proposals)
+            print(self.detector.roi_head.test_cfg)
+            det_bboxes, det_labels = self.detector.roi_head.simple_test_bboxes(
+                x,
+                img_metas,
+                proposals,
+                self.detector.roi_head.test_cfg,
+                rescale=rescale)
+            # TODO: support batch inference
+            print(det_bboxes)
+            print(det_labels)
+            print("zhongyao")
+            det_bboxes = det_bboxes[0]
+            det_labels = det_labels[0]
+            print("下面是重要信息")
+            print(det_bboxes)
+            print(det_labels)
+            num_classes = self.detector.roi_head.bbox_head.num_classes
+        elif hasattr(self.detector, 'bbox_head'):
+            outs = self.detector.bbox_head(x)
+            result_list = self.detector.bbox_head.get_bboxes(
+                *outs, img_metas=img_metas, rescale=rescale)
+            # TODO: support batch inference
+            det_bboxes = result_list[0][0]
+            det_labels = result_list[0][1]
+            num_classes = self.detector.bbox_head.num_classes
+        else:
+            raise TypeError('detector must has roi_head or bbox_head.')
 
         track_bboxes, track_labels, track_ids = self.tracker.track(
             img=img,

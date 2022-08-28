@@ -95,6 +95,11 @@ class DeepSORT(BaseMultiObjectTracker):
             else:
                 proposals = self.detector.rpn_head.simple_test_rpn(
                     x, img_metas)
+            print("important")
+            print(x)
+            print(img_metas)
+            print(proposals)
+            print(self.detector.roi_head.test_cfg)
             det_bboxes, det_labels = self.detector.roi_head.simple_test_bboxes(
                 x,
                 img_metas,

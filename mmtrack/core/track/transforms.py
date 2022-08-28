@@ -117,8 +117,8 @@ def outs2results(bboxes=None,
 
     return results
 
-
-def results2outs(frameid,
+#frameid原来没有None
+def results2outs(frameid=None,
                  bbox_results=None,
                  mask_results=None,
                  mask_shape=None,

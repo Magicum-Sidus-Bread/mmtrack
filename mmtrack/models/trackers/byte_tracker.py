@@ -54,21 +54,33 @@ class ByteTracker(BaseTracker):
     @property
     def confirmed_ids(self):
         """Confirmed ids in the tracker."""
-        ids = [id for id, track in self.tracks.items() if not track.tentative]
+        # print("666666!!!!!!")
+        # print(self.tracks.items())
+        # for track in self.tracks.items():
+        #     print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        #     print("track.tentative")
+        #     print(track)
+        #     print(track[1]['tentative'])
+        ids = [id for id, track in self.tracks.items() if not track[1]['tentative']]
+        # print("PPP")
+        # print(ids)
         return ids
 
     @property
     def unconfirmed_ids(self):
         """Unconfirmed ids in the tracker."""
-        ids = [id for id, track in self.tracks.items() if track.tentative]
+        ids = [id for id, track in self.tracks.items() if track[1]['tentative']]
         return ids
 
     def init_track(self, id, obj):
         """Initialize a track."""
         super().init_track(id, obj)
+        # print("(((((((((((((((((((((((((((((()))))))))))))))))))))))))))))")
         if self.tracks[id].frame_ids[-1] == 0:
+            # print("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL")
             self.tracks[id].tentative = False
         else:
+            # print("IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII")
             self.tracks[id].tentative = True
         bbox = bbox_xyxy_to_cxcyah(self.tracks[id].bboxes[-1])  # size = (1, 4)
         assert bbox.ndim == 2 and bbox.shape[0] == 1
@@ -79,8 +91,13 @@ class ByteTracker(BaseTracker):
     def update_track(self, id, obj):
         """Update a track."""
         super().update_track(id, obj)
+        # print("(((((((((((((((((((((((((((((()))))))))))))))))))))))))))))")
+        # print("self.tracks[id].tentative&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+        # print(self.tracks[id].tentative)
+        # print("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF")
         if self.tracks[id].tentative:
             if len(self.tracks[id]['bboxes']) >= self.num_tentatives:
+                # print("GGGGGGGGGGGGGGGGGGGGGGGGGGGGGG")
                 self.tracks[id].tentative = False
         bbox = bbox_xyxy_to_cxcyah(self.tracks[id].bboxes[-1])  # size = (1, 4)
         assert bbox.ndim == 2 and bbox.shape[0] == 1
@@ -126,33 +143,134 @@ class ByteTracker(BaseTracker):
             tuple(int): The assigning ids.
         """
         # get track_bboxes
+        # print("ERERERERERRERE")
+        # print(det_labels)
         track_bboxes = np.zeros((0, 4))
+        # print(track_bboxes)
+        # print("121214343434")
+        # print(ids)
         for id in ids:
+            # print(self.tracks[id])
             track_bboxes = np.concatenate(
                 (track_bboxes, self.tracks[id].mean[:4][None]), axis=0)
+        # print("444444")
+        # for id in ids:
+        #     print(self.tracks[id].mean[:4][None])
+        #     print(self.tracks[id].mean[:4][None].shape)
+        # print(track_bboxes.shape)
+        # print(track_bboxes)
         track_bboxes = torch.from_numpy(track_bboxes).to(det_bboxes)
+        # print("6666666")
+        # print(track_bboxes.shape)
+        # print(track_bboxes[:,0])
+        # print(track_bboxes)
         track_bboxes = bbox_cxcyah_to_xyxy(track_bboxes)
+        # print(track_bboxes)
+        # print(det_bboxes)
+        # print(det_bboxes[:, 0])
+        ##在这里要把检测框格式转换成xyxy
+        det_box = np.array(det_bboxes.cpu())
+        # print(det_box)
+        # print(det_box.shape)
+        det_boxessss1 = det_box[:, 0]-0.5*det_box[:, 2]
+        det_boxessss2 = det_box[:, 1]-0.5*det_box[:, 3]
+        det_boxessss3 = det_box[:, 0]+0.5*det_box[:, 2]
+        det_boxessss4 = det_box[:, 1]+0.5*det_box[:, 3]
+        # print("%^%^%^%^%^%^%")
+        # print(len(det_boxessss1))
+        # print(det_boxessss1)
+        # print(det_boxessss2)
+        # print(det_boxessss3)
+        # print(det_boxessss4)
+        # print(det_boxessss1.shape)
+        if len(det_boxessss1)!= 0:
+            det_boxessss_test = np.array([[det_boxessss1[0], det_boxessss2[0], det_boxessss3[0], det_boxessss4[0]]])
+            # print(det_boxessss_test.shape)
+            for i in range(1, len(det_boxessss1)):
+                db = np.array([[det_boxessss1[i], det_boxessss2[i], det_boxessss3[i], det_boxessss4[i]]])
+                # print(db)
+                det_boxessss_test = np.r_[det_boxessss_test, db]
+            # print("YFFYFYFYYFFY")
+            # print(det_boxessss_test)
+        # det_boxessss = det_boxessss1[0:]
+        # det_boxessss = np.append(det_boxessss1, det_boxessss2)
+        # det_boxessss = np.append(det_boxessss, det_boxessss3)
+        # det_boxessss = np.append(det_boxessss, det_boxessss4)
+        # print(det_boxessss.shape)
+        # det_boxessss = det_boxessss1 + det_boxessss2 + det_boxessss3 + det_boxessss4
+        # print("dfdfdfdf")
+        # print(track_bboxes.shape)
+        # print(det_boxessss)
+        # det_boxessss = np.array([det_boxessss])
+        # print("oioioioioi")
+        # print(det_boxessss.size)
+        # print(det_boxessss.shape)
+        if len(det_boxessss1)!= 0:
+            det_boxessss = torch.from_numpy(det_boxessss_test).to(det_bboxes)
+        else:
+            det_boxessss = np.zeros((0, 4))
+            det_boxessss = torch.from_numpy(det_boxessss).to(det_bboxes)
 
+        # print(det_boxessss)
+        # print(track_bboxes)
+        # print(det_bboxes[:, :4])
+        # print(det_boxessss.size(-1))
+        # print(det_boxessss.size(0))
+
+        # print("opopop[opopopo")
+        # print(det_boxessss)
+        # print(track_bboxes)
+
+
+        # if det_boxessss.size(-1) == 0:
+        #     print("bnbnbnbnnbnb")
+        #     det_boxessss = np.zeros((0, 4))
+        #     det_boxessss = torch.from_numpy(det_boxessss).to(det_bboxes)
+        #     print(det_boxessss)
+        #     print(det_boxessss.shape)
+
+        # det_box = np.array([[det_bboxes[:, 0], det_bboxes[:, 1], det_bboxes[:, 2], det_bboxes[:, 3]]])
+        # print(det_box)
+
+        ##修改
         # compute distance
-        ious = bbox_overlaps(track_bboxes, det_bboxes[:, :4])
+        ious = bbox_overlaps(track_bboxes, det_boxessss)
+        # ious = bbox_overlaps(track_bboxes, det_bboxes[:, :4])
         if weight_iou_with_det_scores:
-            ious *= det_bboxes[:, 4][None]
-
+            ious *= det_bboxes[:, 5][None]
+        # print("ious****************************")
+        # print(ious)
         # support multi-class association
+        # print("det_bboxes.device")
+        # print(det_bboxes.device)
+        # print("OIOIOIOIOI")
+        # print(len(ids))
+        # for id in ids:
+            # print(self.tracks[id]['labels'][-1])
         track_labels = torch.tensor([
             self.tracks[id]['labels'][-1] for id in ids
         ]).to(det_bboxes.device)
-
+        det_labels = det_labels.to(device=torch.device('cuda:0' if torch.cuda.is_available() else 'cpu'))
+        # print(det_labels)
+        # print(track_labels)
         cate_match = det_labels[None, :] == track_labels[:, None]
+        # print("QWQWQWQWQWQWQWQ")
+        # print(cate_match)
         # to avoid det and track of different categories are matched
         cate_cost = (1 - cate_match.int()) * 1e6
 
         dists = (1 - ious + cate_cost).cpu().numpy()
+        # print("FGFGFGFGFGF")
+        # print(dists)
+        # print(dists.size)
 
         # bipartite match
         if dists.size > 0:
             cost, row, col = lap.lapjv(
                 dists, extend_cost=True, cost_limit=1 - match_iou_thr)
+            # print("RRRRRRRRRRRRRRRRRRRRRRR")
+            # print(row)
+            # print(col)
         else:
             row = np.zeros(len(ids)).astype(np.int32) - 1
             col = np.zeros(len(det_bboxes)).astype(np.int32) - 1
@@ -189,6 +307,10 @@ class ByteTracker(BaseTracker):
         if not hasattr(self, 'kf'):
             self.kf = model.motion
 
+
+        # print("2323232323322")
+        # print(self.empty)
+        # print(bboxes.size(0))
         if self.empty or bboxes.size(0) == 0:
             valid_inds = bboxes[:, -1] > self.init_track_thr
             bboxes = bboxes[valid_inds]
@@ -204,7 +326,8 @@ class ByteTracker(BaseTracker):
                              -1,
                              dtype=labels.dtype,
                              device=labels.device)
-
+            # print("ids")
+            # print(ids)
             # get the detection bboxes for the first association
             first_det_inds = bboxes[:, -1] > self.obj_score_thrs['high']
             first_det_bboxes = bboxes[first_det_inds]
@@ -219,6 +342,9 @@ class ByteTracker(BaseTracker):
             second_det_ids = ids[second_det_inds]
 
             # 1. use Kalman Filter to predict current location
+            # print("************************(*)*)*)*)*)*)*)*)*)*)*)*)*)*)*)*)*)*)*)*)*)*)*)*)*)*)")
+            # print(self.confirmed_ids)
+            # print("************************(*)*)*)*)*)*)*)*)*)*)*)*)*)*)*)*)*)*)*)*)*)*)*)*)*)*)")
             for id in self.confirmed_ids:
                 # track is lost in previous frame
                 if self.tracks[id].frame_ids[-1] != frame_id - 1:
@@ -231,9 +357,14 @@ class ByteTracker(BaseTracker):
             first_match_track_inds, first_match_det_inds = self.assign_ids(
                 self.confirmed_ids, first_det_bboxes, first_det_labels,
                 self.weight_iou_with_det_scores, self.match_iou_thrs['high'])
+            # print("89989898")
+            # print(first_match_track_inds)
+            # print(first_match_det_inds)
             # '-1' mean a detection box is not matched with tracklets in
             # previous frame
             valid = first_match_det_inds > -1
+            # valid = first_match_det_inds == -1
+            # print(valid)
             first_det_ids[valid] = torch.tensor(
                 self.confirmed_ids)[first_match_det_inds[valid]].to(labels)
 
@@ -283,6 +414,9 @@ class ByteTracker(BaseTracker):
                 (first_match_det_bboxes, first_unmatch_det_bboxes), dim=0)
             bboxes = torch.cat((bboxes, second_det_bboxes[valid]), dim=0)
 
+            # print("090909099")
+            # print(first_match_det_ids)
+            # print(first_unmatch_det_ids)
             labels = torch.cat(
                 (first_match_det_labels, first_unmatch_det_labels), dim=0)
             labels = torch.cat((labels, second_det_labels[valid]), dim=0)
@@ -292,11 +426,17 @@ class ByteTracker(BaseTracker):
             ids = torch.cat((ids, second_det_ids[valid]), dim=0)
 
             # 6. assign new ids
+            # print("121212121212")
+            # print(ids)
+            # print(ids == -1)
             new_track_inds = ids == -1
             ids[new_track_inds] = torch.arange(
                 self.num_tracks,
                 self.num_tracks + new_track_inds.sum()).to(labels)
             self.num_tracks += new_track_inds.sum()
+            # print(ids)
 
         self.update(ids=ids, bboxes=bboxes, labels=labels, frame_ids=frame_id)
+        print("VVVVVVVVVVVVVVVVVVVVVVV")
+        print(ids)
         return bboxes, labels, ids

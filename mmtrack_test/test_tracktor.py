@@ -2,7 +2,7 @@
 import mmcv
 import tempfile
 from mmtrack.apis import inference_mot, init_model
-mot_config = '../configs/mot/myconfig/ori_deepsort.py'
+mot_config = '../configs/mot/myconfig/ori_tracktor.py'
 input_video = './input.mp4'
 imgs = mmcv.VideoReader(input_video)
 # build the model from a config file
@@ -26,7 +26,7 @@ for i, img in enumerate(imgs):
             out_file=f'{out_path}/{i:06d}.jpg')
     prog_bar.update()
 
-output = './output_completed3.mp4'
+output = './output_tracktor.mp4'
 print(f'\n making the output video at {output} with a FPS of {imgs.fps}')
 mmcv.frames2video(out_path, output, fps=imgs.fps, fourcc='mp4v')
 out_dir.cleanup()

@@ -100,11 +100,11 @@ class ByteTrack(BaseMultiObjectTracker):
                 proposals = self.detector.rpn_head.simple_test_rpn(
                     x, img_metas)
 
-            print("important")
-            print(x)
-            print(img_metas)
-            print(proposals)
-            print(self.detector.roi_head.test_cfg)
+            # print("important")
+            # print(x)
+            # print(img_metas)
+            # print(proposals)
+            # print(self.detector.roi_head.test_cfg)
             det_bboxes, det_labels = self.detector.roi_head.simple_test_bboxes(
                 x,
                 img_metas,
@@ -112,9 +112,9 @@ class ByteTrack(BaseMultiObjectTracker):
                 self.detector.roi_head.test_cfg,
                 rescale=rescale)
             # TODO: support batch inference
-            print(det_bboxes)
-            print(det_labels)
-            print("zhongyao")
+            # print(det_bboxes)
+            # print(det_labels)
+            # print("zhongyao")
             det_bboxes = det_bboxes[0]
             det_labels = det_labels[0]
             print("下面是重要信息")
@@ -141,7 +141,8 @@ class ByteTrack(BaseMultiObjectTracker):
             frame_id=frame_id,
             rescale=rescale,
             **kwargs)
-
+        print("+++++++++++++++++++++++++++++++++++++")
+        print(track_ids)
         track_results = outs2results(
             bboxes=track_bboxes,
             labels=track_labels,

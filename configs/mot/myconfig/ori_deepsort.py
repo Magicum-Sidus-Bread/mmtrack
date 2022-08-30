@@ -76,7 +76,7 @@ model = dict(
     init_cfg=dict(
             type='Pretrained',
             checkpoint=  # noqa: E251
-            'G:/大创项目/epoch_30.pth'  # noqa: E501
+            'G:/大创项目/mmTracking/mmtrack/mmtrack_test/epoch_40_mul.pth'  # noqa: E501
         ),
     train_cfg=dict(
         rpn=dict(

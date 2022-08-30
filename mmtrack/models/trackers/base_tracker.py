@@ -41,6 +41,8 @@ class BaseTracker(BaseModule, metaclass=ABCMeta):
     @property
     def empty(self):
         """Whether the buffer is empty or not."""
+        # print("执行这里了233333")
+        # print(self.tracks)
         return False if self.tracks else True
 
     @property
@@ -85,10 +87,22 @@ class BaseTracker(BaseModule, metaclass=ABCMeta):
 
         for obj in zip(*kwargs.values()):
             id = int(obj[id_indice])
+            # print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
+            # print(id)
+            # print("(((((((((((((((((((((((((((((()))))))))))))))))))))))))))))")
+            # print(self.tracks)
+            # print("(((((((((((((((((((((((((((((()))))))))))))))))))))))))))))")
+            # print("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
+            # print(len(self.tracks))
+            # print("111111111111111111111111111111")
             if id in self.tracks:
+            # if len(self.tracks) != 0:
                 self.update_track(id, obj)
             else:
                 self.init_track(id, obj)
+                # print("(((((((((((((((((((((((((((((()))))))))))))))))))))))))))))777777")
+                # print(self.tracks)
+                # print("(((((((((((((((((((((((((((((()))))))))))))))))))))))))))))777777")
 
         self.pop_invalid_tracks(frame_id)
 
@@ -104,22 +118,41 @@ class BaseTracker(BaseModule, metaclass=ABCMeta):
     def update_track(self, id, obj):
         """Update a track."""
         for k, v in zip(self.memo_items, obj):
+            # print(self.tracks)
+            # print(id)
+            # print(self.tracks[0]['ids'])
+            # print(v)
             v = v[None]
+            # print(k)
+            # print(v)
             if self.momentums is not None and k in self.momentums:
                 m = self.momentums[k]
                 self.tracks[id][k] = (1 - m) * self.tracks[id][k] + m * v
             else:
+                # print("快完成了")
+                # print(v)
                 self.tracks[id][k].append(v)
 
     def init_track(self, id, obj):
         """Initialize a track."""
         self.tracks[id] = Dict()
         for k, v in zip(self.memo_items, obj):
+            # print("(((((((((((((((((((((((((((((()))))))))))))))))))))))))))))&&&&&&&&")
+            # print(k)
+            # print(v)
             v = v[None]
+            # print([v])
+            # print("(((((((((((((((((((((((((((((()))))))))))))))))))))))))))))&&&&&&&&")
             if self.momentums is not None and k in self.momentums:
+                # print("(((((((((((((((((((((((((((((()))))))))))))))))))))))))))))&&&&&&&&")
                 self.tracks[id][k] = v
             else:
+                # print("(((((((((((((((((((((((((((((()))))))))))))))))))))))))))))777777")
                 self.tracks[id][k] = [v]
+                # print(self.tracks)
+        # print("(((((((((((((((((((((((((((((()))))))))))))))))))))))))))))!!!!!!!")
+        # print(self.tracks)
+        # print("(((((((((((((((((((((((((((((()))))))))))))))))))))))))))))!!!!!!!!!")
 
     @property
     def memo(self):
@@ -208,8 +241,8 @@ class BaseTracker(BaseModule, metaclass=ABCMeta):
         bboxes[:, 1::2] = torch.clamp(bboxes[:, 1::2], min=0, max=h)
 
         crop_imgs = []
-        print("bbboxes")
-        print(bboxes)
+        # print("bbboxes")
+        # print(bboxes)
         for bbox in bboxes:
             x1, y1, x2, y2 = map(int, bbox)
             if x2 == 0:
@@ -219,8 +252,8 @@ class BaseTracker(BaseModule, metaclass=ABCMeta):
             y_ = y1 + y2
             x_ = x1 + x2
             crop_img = img[:, :, y1:y_, x1:x_] ####这里必须和数据标注格式对应###修改
-            print("input_crop_img")
-            print(crop_img)
+            # print("input_crop_img")
+            # print(crop_img)
             if self.reid.get('img_scale', False):
                 crop_img = F.interpolate(
                     crop_img,

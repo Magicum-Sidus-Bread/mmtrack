@@ -225,6 +225,8 @@ class SortTracker(BaseTracker):
                 ious = bbox_overlaps(
                     track_bboxes, bboxes[active_dets][:, :-1]).cpu().numpy()
                 dists = 1 - ious
+                print("PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP")
+                print(dists)
                 row, col = linear_sum_assignment(dists)
                 for r, c in zip(row, col):
                     dist = dists[r, c]

@@ -1,199 +1,224 @@
-<div align="center">
-  <img src="resources/mmtrack-logo.png" width="600"/>
-  <div>&nbsp;</div>
-  <div align="center">
-    <b><font size="5">OpenMMLab website</font></b>
-    <sup>
-      <a href="https://openmmlab.com">
-        <i><font size="4">HOT</font></i>
-      </a>
-    </sup>
-    &nbsp;&nbsp;&nbsp;&nbsp;
-    <b><font size="5">OpenMMLab platform</font></b>
-    <sup>
-      <a href="https://platform.openmmlab.com">
-        <i><font size="4">TRY IT OUT</font></i>
-      </a>
-    </sup>
-  </div>
-  <div>&nbsp;</div>
+## 1. 环境配置及安装：
 
-[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/mmtrack)](https://pypi.org/project/mmtrack/)
-[![PyPI](https://img.shields.io/pypi/v/mmtrack)](https://pypi.org/project/mmtrack)
-[![docs](https://img.shields.io/badge/docs-latest-blue)](https://mmtracking.readthedocs.io/en/latest/)
-[![badge](https://github.com/open-mmlab/mmtracking/workflows/build/badge.svg)](https://github.com/open-mmlab/mmtracking/actions)
-[![codecov](https://codecov.io/gh/open-mmlab/mmtracking/branch/master/graph/badge.svg)](https://codecov.io/gh/open-mmlab/mmtracking)
-[![license](https://img.shields.io/github/license/open-mmlab/mmtracking.svg)](https://github.com/open-mmlab/mmtracking/blob/master/LICENSE)
+## Prerequisites
 
-[📘Documentation](https://mmtracking.readthedocs.io/) |
-[🛠️Installation](https://mmtracking.readthedocs.io/en/latest/install.html) |
-[👀Model Zoo](https://mmtracking.readthedocs.io/en/latest/model_zoo.html) |
-[🆕Update News](https://mmtracking.readthedocs.io/en/latest/changelog.html) |
-[🤔Reporting Issues](https://github.com/open-mmlab/mmtracking/issues/new/choose)
+- Linux | macOS | Windows
+- Python 3.6+
+- PyTorch 1.3+
+- CUDA 9.2+ (If you build PyTorch from source, CUDA 9.0 is also compatible)
+- GCC 5+
+- [MMCV](https://mmcv.readthedocs.io/en/latest/get_started/installation.html)
+- [MMDetection](https://mmdetection.readthedocs.io/en/latest/get_started.html#installation)
 
-</div>
+The compatible MMTracking, MMCV, and MMDetection versions are as below. Please install the correct version to avoid installation issues.
 
-<div align="center">
-
-English | [简体中文](README_zh-CN.md)
-
-</div>
-
-## Introduction
-
-MMTracking is an open source video perception toolbox by PyTorch. It is a part of [OpenMMLab](https://openmmlab.com) project.
-
-The master branch works with **PyTorch1.5+**.
-
-<div align="center">
-  <img src="https://user-images.githubusercontent.com/24663779/103343312-c724f480-4ac6-11eb-9c22-b56f1902584e.gif" width="800"/>
-</div>
-
-### Major features
-
-- **The First Unified Video Perception Platform**
-
-  We are the first open source toolbox that unifies versatile video perception tasks include video object detection, multiple object tracking, single object tracking and video instance segmentation.
-
-- **Modular Design**
-
-  We decompose the video perception framework into different components and one can easily construct a customized method by combining different modules.
-
-- **Simple, Fast and Strong**
-
-  **Simple**: MMTracking interacts with other OpenMMLab projects. It is built upon [MMDetection](https://github.com/open-mmlab/mmdetection) that we can capitalize any detector only through modifying the configs.
-
-  **Fast**: All operations run on GPUs. The training and inference speeds are faster than or comparable to other implementations.
-
-  **Strong**: We reproduce state-of-the-art models and some of them even outperform the official implementations.
-
-## What's New
-
-Release [QDTrack](configs/mot/qdtrack) pretrained models.
-
-v0.13.0 was released in 29/04/2022.
-Please refer to [changelog.md](docs/en/changelog.md) for details and release history.
+| MMTracking version |        MMCV version        | MMDetection version |
+| :----------------: | :------------------------: | :-----------------: |
+|       master       | mmcv-full>=1.3.17, \<1.6.0 | MMDetection>=2.19.1 |
+|       0.13.0       | mmcv-full>=1.3.17, \<1.6.0 | MMDetection>=2.19.1 |
+|       0.12.0       | mmcv-full>=1.3.17, \<1.5.0 | MMDetection>=2.19.1 |
+|       0.11.0       | mmcv-full>=1.3.17, \<1.5.0 | MMDetection>=2.19.1 |
+|       0.10.0       | mmcv-full>=1.3.17, \<1.5.0 | MMDetection>=2.19.1 |
+|       0.9.0        | mmcv-full>=1.3.17, \<1.5.0 | MMDetection>=2.19.1 |
+|       0.8.0        | mmcv-full>=1.3.8, \<1.4.0  | MMDetection>=2.14.0 |
+|       0.7.0        | mmcv-full>=1.3.8, \<1.4.0  | MMDetection>=2.14.0 |
+|       0.6.0        | mmcv-full>=1.3.8, \<1.4.0  | MMDetection>=2.14.0 |
 
 ## Installation
 
-Please refer to [install.md](docs/en/install.md) for install instructions.
+### Detailed Instructions
 
-## Getting Started
+1. Create a conda virtual environment and activate it.
 
-Please see [dataset.md](docs/en/dataset.md) and [quick_run.md](docs/en/quick_run.md) for the basic usage of MMTracking.
+   ```shell
+   conda create -n open-mmlab python=3.7 -y
+   conda activate open-mmlab
+   ```
 
-A Colab tutorial is provided. You may preview the notebook [here](./demo/MMTracking_Tutorial.ipynb) or directly run it on [Colab](https://colab.research.google.com/github/open-mmlab/mmtracking/blob/master/demo/MMTracking_Tutorial.ipynb).
+2. Install PyTorch and torchvision following the [official instructions](https://pytorch.org/), e.g.,
 
-There are also usage [tutorials](docs/en/tutorials/), such as [learning about configs](docs/en/tutorials/config.md), [an example about detailed description of vid config](docs/en/tutorials/config_vid.md), [an example about detailed description of mot config](docs/en/tutorials/config_mot.md), [an example about detailed description of sot config](docs/en/tutorials/config_sot.md), [customizing dataset](docs/en/tutorials/customize_dataset.md), [customizing data pipeline](docs/en/tutorials/customize_data_pipeline.md), [customizing vid model](docs/en/tutorials/customize_vid_model.md), [customizing mot model](docs/en/tutorials/customize_mot_model.md), [customizing sot model](docs/en/tutorials/customize_sot_model.md), [customizing runtime settings](docs/en/tutorials/customize_runtime.md) and [useful tools](docs/en/useful_tools_scripts.md).
+   ```shell
+   conda install pytorch torchvision -c pytorch
+   ```
 
-## Benchmark and model zoo
+   Note: Make sure that your compilation CUDA version and runtime CUDA version match.
+   You can check the supported CUDA version for precompiled packages on the [PyTorch website](https://pytorch.org/).
 
-Results and models are available in the [model zoo](docs/en/model_zoo.md).
+   `E.g.1` If you have CUDA 10.1 installed under `/usr/local/cuda` and would like to install
+   PyTorch 1.5, you need to install the prebuilt PyTorch with CUDA 10.1.
 
-### Video Object Detection
+   ```shell
+   conda install pytorch==1.5 cudatoolkit=10.1 torchvision -c pytorch
+   ```
 
-Supported Methods
+   `E.g. 2` If you have CUDA 9.2 installed under `/usr/local/cuda` and would like to install
+   PyTorch 1.3.1., you need to install the prebuilt PyTorch with CUDA 9.2.
 
-- [x] [DFF](configs/vid/dff) (CVPR 2017)
-- [x] [FGFA](configs/vid/fgfa) (ICCV 2017)
-- [x] [SELSA](configs/vid/selsa) (ICCV 2019)
-- [x] [Temporal RoI Align](configs/vid/temporal_roi_align) (AAAI 2021)
+   ```shell
+   conda install pytorch=1.3.1 cudatoolkit=9.2 torchvision=0.4.2 -c pytorch
+   ```
 
-Supported Datasets
+   If you build PyTorch from source instead of installing the prebuilt package,
+   you can use more CUDA versions such as 9.0.
 
-- [x] [ILSVRC](http://image-net.org/challenges/LSVRC/2017/)
+3. Install extra dependencies for VOT evaluation (optional)
 
-### Single Object Tracking
+   If you need to evaluate on VOT Challenge, please install the vot-toolkit before the installation of mmcv and mmdetection to avoid possible numpy version requirement conflict among some dependencies.
 
-Supported Methods
+   ```shell
+   pip install git+https://github.com/votchallenge/toolkit.git
 
-- [x] [SiameseRPN++](configs/sot/siamese_rpn) (CVPR 2019)
-- [x] [STARK](configs/sot/stark) (ICCV 2021)
-- [ ] [PrDiMP](https://arxiv.org/abs/2003.12565) (CVPR2020) (WIP)
+   ```
 
-Supported Datasets
+4. Install mmcv-full, we recommend you to install the pre-build package as below.
 
-- [x] [LaSOT](http://vision.cs.stonybrook.edu/~lasot/)
-- [x] [UAV123](https://cemse.kaust.edu.sa/ivul/uav123/)
-- [x] [TrackingNet](https://tracking-net.org/)
-- [x] [OTB100](http://www.visual-tracking.net/)
-- [x] [GOT10k](http://got-10k.aitestunion.com/)
-- [x] [VOT2018](https://www.votchallenge.net/vot2018/)
+   ```shell
+   # pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/{cu_version}/{torch_version}/index.html
+   pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu102/torch1.10.0/index.html
+   ```
 
-### Multi-Object Tracking
+   mmcv-full is only compiled on PyTorch 1.x.0 because the compatibility usually holds between 1.x.0 and 1.x.1. If your PyTorch version is 1.x.1, you can install mmcv-full compiled with PyTorch 1.x.0 and it usually works well.
 
-Supported Methods
+   ```shell
+   # We can ignore the micro version of PyTorch
+   pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu102/torch1.10/index.html
+   ```
 
-- [x] [SORT/DeepSORT](configs/mot/deepsort) (ICIP 2016/2017)
-- [x] [Tracktor](configs/mot/tracktor) (ICCV 2019)
-- [x] [QDTrack](configs/mot/qdtrack) (CVPR 2021)
-- [x] [ByteTrack](configs/mot/bytetrack) (arXiv 2021)
-- [ ] [OC-SORT](https://arxiv.org/abs/2203.14360)  (arXiv 2022) (WIP)
+   See [here](https://mmcv.readthedocs.io/en/latest/get_started/installation.html) for different versions of MMCV compatible to different PyTorch and CUDA versions.
+   Optionally you can choose to compile mmcv from source by the following command
 
-Supported Datasets
+   ```shell
+   git clone https://github.com/open-mmlab/mmcv.git
+   cd mmcv
+   MMCV_WITH_OPS=1 pip install -e .  # package mmcv-full will be installed after this step
+   cd ..
+   ```
 
-- [x] [MOT Challenge](https://motchallenge.net/)
-- [x] [CrowdHuman](https://www.crowdhuman.org/)
-- [x] [LVIS](https://www.lvisdataset.org/)
-- [x] [TAO](https://taodataset.org/)
-- [x] [DanceTrack](https://arxiv.org/abs/2111.14690)
+5. Install MMDetection
 
-### Video Instance Segmentation
+   ```shell
+   pip install mmdet
+   ```
 
-Supported Methods
+   Optionally, you can also build MMDetection from source in case you want to modify the code:
 
-- [x] [MaskTrack R-CNN](configs/vis/masktrack_rcnn) (ICCV 2019)
+   ```shell
+   git clone https://github.com/open-mmlab/mmdetection.git
+   cd mmdetection
+   pip install -r requirements/build.txt
+   pip install -v -e .  # or "python setup.py develop"
+   ```
 
-Supported Datasets
+6. Clone the MMTracking repository.
 
-- [x] [YouTube-VIS](https://youtube-vos.org/dataset/vis/)
+   ```shell
+   git clone https://github.com/open-mmlab/mmtracking.git
+   cd mmtracking
+   ```
 
-## Contributing
+7. Install build requirements and then install MMTracking.
 
-We appreciate all contributions to improve MMTracking. Please refer to [CONTRIBUTING.md](https://github.com/open-mmlab/mmcv/blob/master/CONTRIBUTING.md) for the contributing guideline and [this discussion](https://github.com/open-mmlab/mmtracking/issues/73) for development roadmap.
+   ```shell
+   pip install -r requirements/build.txt
+   pip install -v -e .  # or "python setup.py develop"
+   ```
 
-## Acknowledgement
+8. Install extra dependencies
 
-MMTracking is an open source project that welcome any contribution and feedback.
-We wish that the toolbox and benchmark could serve the growing research
-community by providing a flexible as well as standardized toolkit to reimplement existing methods
-and develop their own new video perception methods.
+- For MOTChallenge evaluation:
 
-## Citation
+  ```shell
 
-If you find this project useful in your research, please consider cite:
+  pip install git+https://github.com/JonathonLuiten/TrackEval.git
+  ```
 
-```latex
-@misc{mmtrack2020,
-    title={{MMTracking: OpenMMLab} video perception toolbox and benchmark},
-    author={MMTracking Contributors},
-    howpublished = {\url{https://github.com/open-mmlab/mmtracking}},
-    year={2020}
-}
+- For LVIS evaluation:
+
+  ```shell
+  pip install git+https://github.com/lvis-dataset/lvis-api.git
+  ```
+
+- For TAO evaluation:
+
+  ```shell
+  pip install git+https://github.com/TAO-Dataset/tao.git
+  ```
+
+Note:
+
+a. Following the above instructions, MMTracking is installed on `dev` mode
+, any local modifications made to the code will take effect without the need to reinstall it.
+
+b. If you would like to use `opencv-python-headless` instead of `opencv-python`,
+you can install it before installing MMCV.
+
+### A from-scratch setup script
+
+Assuming that you already have CUDA 10.1 installed, here is a full script for setting up MMTracking with conda.
+
+```shell
+conda create -n open-mmlab python=3.7 -y
+conda activate open-mmlab
+
+conda install pytorch==1.6.0 torchvision==0.7.0 cudatoolkit=10.1 -c pytorch -y
+
+pip install git+https://github.com/votchallenge/toolkit.git (optional)
+# install the latest mmcv
+pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu101/torch1.6.0/index.html
+
+# install mmdetection
+pip install mmdet
+
+# install mmtracking
+git clone https://github.com/open-mmlab/mmtracking.git
+cd mmtracking
+pip install -r requirements/build.txt
+pip install -v -e .
+pip install git+https://github.com/JonathonLuiten/TrackEval.git
+pip install git+https://github.com/lvis-dataset/lvis-api.git
+pip install git+https://github.com/TAO-Dataset/tao.git
 ```
 
-## License
+### Developing with multiple MMTracking versions
 
-This project is released under the [Apache 2.0 license](LICENSE).
+The train and test scripts already modify the `PYTHONPATH` to ensure the script use the MMTracking in the current directory.
 
-## Projects in OpenMMLab
+To use the default MMTracking installed in the environment rather than that you are working with, you can remove the following line in those scripts
 
-- [MMCV](https://github.com/open-mmlab/mmcv): OpenMMLab foundational library for computer vision.
-- [MIM](https://github.com/open-mmlab/mim): MIM installs OpenMMLab packages.
-- [MMClassification](https://github.com/open-mmlab/mmclassification): OpenMMLab image classification toolbox and benchmark.
-- [MMDetection](https://github.com/open-mmlab/mmdetection): OpenMMLab detection toolbox and benchmark.
-- [MMDetection3D](https://github.com/open-mmlab/mmdetection3d): OpenMMLab's next-generation platform for general 3D object detection.
-- [MMRotate](https://github.com/open-mmlab/mmrotate): OpenMMLab rotated object detection toolbox and benchmark.
-- [MMSegmentation](https://github.com/open-mmlab/mmsegmentation): OpenMMLab semantic segmentation toolbox and benchmark.
-- [MMOCR](https://github.com/open-mmlab/mmocr): OpenMMLab text detection, recognition and understanding toolbox.
-- [MMPose](https://github.com/open-mmlab/mmpose): OpenMMLab pose estimation toolbox and benchmark.
-- [MMHuman3D](https://github.com/open-mmlab/mmhuman3d): OpenMMLab 3D human parametric model toolbox and benchmark.
-- [MMSelfSup](https://github.com/open-mmlab/mmselfsup): OpenMMLab self-supervised learning Toolbox and Benchmark.
-- [MMRazor](https://github.com/open-mmlab/mmrazor): OpenMMLab Model Compression Toolbox and Benchmark.
-- [MMFewShot](https://github.com/open-mmlab/mmfewshot): OpenMMLab FewShot Learning Toolbox and Benchmark.
-- [MMAction2](https://github.com/open-mmlab/mmaction2): OpenMMLab's next-generation action understanding toolbox and benchmark.
-- [MMTracking](https://github.com/open-mmlab/mmtracking): OpenMMLab video perception toolbox and benchmark.
-- [MMFlow](https://github.com/open-mmlab/mmflow): OpenMMLab optical flow toolbox and benchmark.
-- [MMEditing](https://github.com/open-mmlab/mmediting): OpenMMLab image and video editing toolbox.
-- [MMGeneration](https://github.com/open-mmlab/mmgeneration):  OpenMMLab Generative Model toolbox and benchmark.
-- [MMDeploy](https://github.com/open-mmlab/mmdeploy): OpenMMlab deep learning model deployment toolset.
+```shell
+PYTHONPATH="$(dirname $0)/..":$PYTHONPATH
+```
+
+## Verification
+
+To verify whether MMTracking and the required environment are installed correctly, we can run MOT, VID, SOT demo script.
+
+For example, run MOT demo and you will see a output video named `mot.mp4`:
+
+```shell
+python demo/demo_mot_vis.py configs/mot/deepsort/sort_faster-rcnn_fpn_4e_mot17-private.py --input demo/demo.mp4 --output mot.mp4
+```
+
+## 2. 主要文件结构介绍
+
+1. configs文件夹包括所有的运行配置文件，自定义的配置文件在configs/mot/myconfig路径下，包括ByteTrack和Deepsort两种方法的配置文件
+2. mmtrack/datasets路径放置自定义的数据集注册文件
+3. mmtrack/models/trackers路径放置跟踪方法具体实现文件
+4. mmtrack_test路径下放置跟踪方法的推理代码文件test_bytetrack.py和test_deepsort.py
+
+## 3. 运行步骤说明（主要运行test_bytetrack.py或test_deepsort.py）
+
+1. 下载模型参数文件，并放置到一定的位置（可以在配置文件中修改路径）
+
+   百度网盘链接：
+
+   链接：https://pan.baidu.com/s/1f1xHOIa9hrlCreCLbgEpaA?pwd=4321 
+   提取码：4321
+
+2. 准备待推理视频作为输入，如果是图片序列需要使用ffmpeg等工具合成为MP4格式，输入视频路径可以在推理代码文件中修改
+
+3. 修改推理代码文件中配置文件的路径，修改输出视频的路径
+
+4. 运行mmtrack_test/test_bytetrack.py或mmtrack_test/test_deepsort.py即可输出跟踪结果视频，同时会生成跟踪结果txt文件，其中txt文件的路径以及名称在mmtrack/core/track/transforms.py中的results2outs函数中修改
+
+5. 准备gt文件和跟踪结果文件，运行evaluate.py可以得到模型MOT评估指标

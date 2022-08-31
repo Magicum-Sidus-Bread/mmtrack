@@ -156,7 +156,7 @@ def results2outs(frameid=None,
         print("bbbbbboexs")
         print(bboxes)
         ##### 生成跟踪结果
-        f = open('G:/大创项目/mmTracking/mmtrack/mmtrack_test/test_file3.txt', 'a')
+        f = open('G:/大创项目/mmTracking/mmtrack/mmtrack_test/test_file7D.txt', 'a')
 
         for bbox_test in bboxes:
             line = str(frameid+1)+','+str(int(bbox_test[0])+1)+','+str(bbox_test[1]-0.5*bbox_test[3])+','+str(bbox_test[2]-0.5*bbox_test[4])+','+str(bbox_test[3])+','+str(bbox_test[4])+','+str(bbox_test[6])+',-1,-1,-1'
@@ -164,16 +164,16 @@ def results2outs(frameid=None,
             f.write(line)
             f.write('\n')
         f.close()
-        print(bboxes[0][0])
-        print("***************&&&&&&&&&&&&&")
+        # print(bboxes[0][0])
+        # print("***************&&&&&&&&&&&&&")
         bboxes_ = []
         for bbox_ in bboxes:
             bboxes_.append([bbox_[0], bbox_[1]-0.5*bbox_[3], bbox_[2]-0.5*bbox_[4], bbox_[1]+0.5*bbox_[3], bbox_[2]+0.5*bbox_[4], bbox_[6]])
         # bboxes = [[bboxes[0][0], bboxes[0][1]-0.5*bboxes[0][3], bboxes[0][2]-0.5*bboxes[0][4], bboxes[0][1]+0.5*bboxes[0][3], bboxes[0][2]+0.5*bboxes[0][4], bboxes[0][6]]]
         bboxes = bboxes_
         bboxes = np.array(bboxes)
-        print("***************&&&&&&&&&&&&&")
-        print(bboxes)
+        # print("***************&&&&&&&&&&&&&")
+        # print(bboxes)
         if bboxes.shape[1] == 5:
             outputs['bboxes'] = bboxes
         elif bboxes.shape[1] == 6:

@@ -2,7 +2,7 @@ import motmetrics as mm  # 导入该库
 import numpy as np
 
 gt_file = './7.txt'
-ts_file = './test_file3.txt'
+ts_file = './test_file7D.txt'
 
 gt = mm.io.loadtxt(gt_file, fmt="mot15-2D", min_confidence=1)  # 读入GT
 ts = mm.io.loadtxt(ts_file, fmt="mot15-2D")  # 读入自己生成的跟踪结果

@@ -83,9 +83,9 @@ class ByteTrack(BaseMultiObjectTracker):
         # print(det_labels)
         # print("下面是label数量：")
         # print(len(det_labels))
-        print("img:")
-        print(img)
-        print(img_metas)
+        # print("img:")
+        # print(img)
+        # print(img_metas)
         frame_id = img_metas[0].get('frame_id', -1)
         if frame_id == 0:
             self.tracker.reset()
@@ -141,8 +141,8 @@ class ByteTrack(BaseMultiObjectTracker):
             frame_id=frame_id,
             rescale=rescale,
             **kwargs)
-        print("+++++++++++++++++++++++++++++++++++++")
-        print(track_ids)
+        # print("+++++++++++++++++++++++++++++++++++++")
+        # print(track_ids)
         track_results = outs2results(
             bboxes=track_bboxes,
             labels=track_labels,

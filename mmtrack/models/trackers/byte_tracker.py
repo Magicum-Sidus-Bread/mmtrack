@@ -437,6 +437,6 @@ class ByteTracker(BaseTracker):
             # print(ids)
 
         self.update(ids=ids, bboxes=bboxes, labels=labels, frame_ids=frame_id)
-        print("VVVVVVVVVVVVVVVVVVVVVVV")
+        print("id")
         print(ids)
         return bboxes, labels, ids

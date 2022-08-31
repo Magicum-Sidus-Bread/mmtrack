@@ -65,8 +65,8 @@ class SortTracker(BaseTracker):
         ids = [id for id, track in self.tracks.items() if not track[1]['tentative']]
         ###修改
         #ids = [id for id, track in self.tracks.items()]
-        print("PPPids")
-        print(ids)
+        # print("PPPids")
+        # print(ids)
         return ids
 
     def init_track(self, id, obj):
@@ -82,14 +82,14 @@ class SortTracker(BaseTracker):
     def update_track(self, id, obj):
         """Update a track."""
         super().update_track(id, obj)
-        print("tentative")
-        print(self.tracks[id].tentative)
+        # print("tentative")
+        # print(self.tracks[id].tentative)
         if self.tracks[id].tentative:
-            print("**********")
-            print(self.tracks[id]['bboxes'])
-            print(self.num_tentatives)
+            # print("**********")
+            # print(self.tracks[id]['bboxes'])
+            # print(self.num_tentatives)
             if len(self.tracks[id]['bboxes']) >= self.num_tentatives:
-                print("!!!!!!!")
+                # print("!!!!!!!")
                 self.tracks[id].tentative = False
         bbox = bbox_xyxy_to_cxcyah(self.tracks[id].bboxes[-1])  # size = (1, 4)
         assert bbox.ndim == 2 and bbox.shape[0] == 1
@@ -152,8 +152,8 @@ class SortTracker(BaseTracker):
         valid_inds = bboxes[:, -1] > self.obj_score_thr
         bboxes = bboxes[valid_inds]
         labels = labels[valid_inds]
-        print("ppp")
-        print(bboxes)
+        # print("ppp")
+        # print(bboxes)
 
         if self.empty or bboxes.size(0) == 0:
             num_new_tracks = bboxes.size(0)
@@ -175,16 +175,16 @@ class SortTracker(BaseTracker):
                     self.tracks, bbox_xyxy_to_cxcyah(bboxes))
 
             active_ids = self.confirmed_ids
-            print("active_ids0")
-            print(active_ids)
-            print(self.confirmed_ids)
+            # print("active_ids0")
+            # print(active_ids)
+            # print(self.confirmed_ids)
             if self.with_reid:
                 embeds = model.reid.simple_test(
                     self.crop_imgs(reid_img, img_metas, bboxes[:, :4].clone(),
                                    rescale))
                 # reid
-                print("active_ids1")
-                print(active_ids)
+                # print("active_ids1")
+                # print(active_ids)
                 if len(active_ids) > 0:
                     track_embeds = self.get(
                         'embeds',
@@ -204,8 +204,8 @@ class SortTracker(BaseTracker):
                             continue
                         if dist <= self.reid['match_score_thr']:
                             ids[c] = active_ids[r]
-            print("active_ids2")
-            print(active_ids)
+            # print("active_ids2")
+            # print(active_ids)
             active_ids = [
                 id for id in self.ids if id not in ids
                 and self.tracks[id].frame_ids[-1] == frame_id - 1
@@ -213,20 +213,20 @@ class SortTracker(BaseTracker):
             print(active_ids)
             if len(active_ids) > 0:
                 active_dets = torch.nonzero(ids == -1).squeeze(1)
-                print("active_dets")
-                print(active_dets)
-                print("qqqbboxes")
-                print(bboxes)
+                # print("active_dets")
+                # print(active_dets)
+                # print("qqqbboxes")
+                # print(bboxes)
                 track_bboxes = self.get('bboxes', active_ids)
-                print("qqqqqqtrack_bboxes")
-                print(track_bboxes)
-                print("qqqqqq_bboxes_active")
-                print(bboxes[active_dets][:, :-1])
+                # print("qqqqqqtrack_bboxes")
+                # print(track_bboxes)
+                # print("qqqqqq_bboxes_active")
+                # print(bboxes[active_dets][:, :-1])
                 ious = bbox_overlaps(
                     track_bboxes, bboxes[active_dets][:, :-1]).cpu().numpy()
                 dists = 1 - ious
-                print("PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP")
-                print(dists)
+                # print("PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP")
+                # print(dists)
                 row, col = linear_sum_assignment(dists)
                 for r, c in zip(row, col):
                     dist = dists[r, c]
@@ -234,8 +234,8 @@ class SortTracker(BaseTracker):
                         ids[active_dets[c]] = active_ids[r]
 
             new_track_inds = ids == -1
-            print("new_track_inds")
-            print(new_track_inds)
+            # print("new_track_inds")
+            # print(new_track_inds)
             ids[new_track_inds] = torch.arange(
                 self.num_tracks,
                 self.num_tracks + new_track_inds.sum(),
@@ -249,6 +249,6 @@ class SortTracker(BaseTracker):
             labels=labels,
             embeds=embeds if self.with_reid else None,
             frame_ids=frame_id)
-        print("终极id：")
+        print("id：")
         print(ids)
         return bboxes, labels, ids

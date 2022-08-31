@@ -3,7 +3,7 @@ import mmcv
 import tempfile
 from mmtrack.apis import inference_mot, init_model
 mot_config = '../configs/mot/myconfig/ori_deepsort.py'
-input_video = './input.mp4'
+input_video = './outout.mp4'
 imgs = mmcv.VideoReader(input_video)
 # build the model from a config file
 mot_model = init_model(mot_config, device='cuda:0')
@@ -12,11 +12,11 @@ out_dir = tempfile.TemporaryDirectory()
 out_path = out_dir.name
 # test and show/save the images
 for i, img in enumerate(imgs):
-    print("img")
-    print(len(img))
+    # print("img")
+    # print(len(img))
     result = inference_mot(mot_model, img, frame_id=i)
-    print(result)
-    print("!!!!!!!!")
+    # print(result)
+    # print("!!!!!!!!")
     mot_model.show_result(
             i,
             img,
